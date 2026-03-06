@@ -2,6 +2,9 @@
 bin/
 obj/
 
+# Generated app icon (regenerate with GenerateIcon project)
+TaskbarNumberOverlay/app.ico
+
 # Downloaded build prerequisites (re-download with: Invoke-WebRequest -Uri "https://aka.ms/dotnet/8.0/windowsdesktop-runtime-win-x64.exe" -OutFile "Bundle/dotnet-desktop-runtime-8.0-win-x64.exe")
 Bundle/*.exe
 

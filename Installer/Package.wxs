@@ -10,6 +10,17 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of Taskbar Number Overlay is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
+    <CustomAction Id="LaunchApp"
+                  Directory="INSTALLFOLDER"
+                  ExeCommand='"[INSTALLFOLDER]TaskbarNumberOverlay.exe"'
+                  Execute="immediate"
+                  Impersonate="yes"
+                  Return="asyncNoWait" />
+
+    <InstallExecuteSequence>
+      <Custom Action="LaunchApp" After="InstallFinalize" Condition="NOT REMOVE AND NOT UPGRADINGPRODUCTCODE" />
+    </InstallExecuteSequence>
+
     <Feature Id="Main" Title="Taskbar Number Overlay" Level="1">
       <ComponentGroupRef Id="AppFiles" />
       <ComponentRef Id="ProgramMenuShortcut" />
