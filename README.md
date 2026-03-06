@@ -2,39 +2,57 @@
 
 Small Windows app that draws permanent `1..0` badges on top of taskbar app buttons so you always have a visual reference for `Win + number` shortcuts.
 
-## Project Website
+**Website:** [taskbarnumbers.thereminhero.co.uk](https://taskbarnumbers.thereminhero.co.uk)
 
-This repo includes a static website at `index.html`.
+## Install
 
-Open it directly in a browser, or serve it locally:
+Download and run the installer from the [Releases](https://github.com/greigs/taskbarnumbers/releases) page.
 
-```powershell
-python -m http.server 8080
-```
+- Installs to `Program Files\Taskbar Number Overlay`
+- Starts the app immediately after installation
+- Adds a startup entry so it runs automatically at login
+- Includes .NET 8 Desktop Runtime if not already installed
 
-Then visit `http://localhost:8080`.
+To uninstall, use **Add or remove programs** in Windows Settings.
 
-## Run
+## Exit / Tray icon
+
+The app runs silently in the background. To exit it, right-click the icon in the system tray and choose **Exit**.
+
+## Run from source
 
 ```powershell
 dotnet run --project .\TaskbarNumberOverlay\TaskbarNumberOverlay.csproj
 ```
 
-## Build EXE
+## Build framework-dependent publish (used by the installer)
+
+```powershell
+dotnet publish .\TaskbarNumberOverlay\TaskbarNumberOverlay.csproj -c Release --self-contained false
+```
+
+Published files: `.\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\`
+
+## Build self-contained single-file EXE
 
 ```powershell
 dotnet publish .\TaskbarNumberOverlay\TaskbarNumberOverlay.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
 ```
 
-Published file:
+Published file: `.\TaskbarNumberOverlay\bin\Release\net8.0-windows\win-x64\publish\TaskbarNumberOverlay.exe`
 
-`.\TaskbarNumberOverlay\bin\Release\net8.0-windows\win-x64\publish\TaskbarNumberOverlay.exe`
+## Build the installer
 
-## Start automatically at login
+```powershell
+dotnet build .\Installer\Installer.wixproj -c Release
+```
+
+MSI output: `.\Installer\bin\x64\Release\TaskbarNumberOverlay-Setup.msi`
+
+## Start automatically at login (manual, without installer)
 
 1. Press `Win + R`, run `shell:startup`.
-2. Create a shortcut in that folder that points to `TaskbarNumberOverlay.exe`.
-3. Sign out and back in (or run the EXE once now).
+2. Create a shortcut in that folder pointing to `TaskbarNumberOverlay.exe`.
 
 ## Notes
 
@@ -46,18 +64,20 @@ Published file:
 
 The app creates `settings.json` in the same folder as the running EXE on first launch.
 
-If you run via `dotnet run`, edit:
+If running via `dotnet run`, edit:
 
-`.\TaskbarNumberOverlay\bin\Release\net8.0-windows\settings.json` (or `Debug` if you run debug build).
+`.\TaskbarNumberOverlay\bin\Release\net8.0-windows\settings.json`
 
-Common settings:
-
-- `RefreshIntervalMs`: update speed (100 to 5000)
-- `BadgeWidth`, `BadgeHeight`: badge size
-- `VerticalOffsetPx`: vertical badge offset from top of icon
-- `CornerRadius`, `FontSize`: badge style
-- `BadgeColorRgba`, `TextColorRgba`: `R,G,B,A` (0 to 255)
-- `ShowDiagnosticWhenNoButtons`: show/hide diagnostic banner
-- `DiagnosticBadgeColorRgba`, `DiagnosticTextColorRgba`: diagnostic banner colors
+| Setting | Description |
+|---|---|
+| `RefreshIntervalMs` | Update speed in ms (100–5000) |
+| `BadgeWidth`, `BadgeHeight` | Badge size in pixels |
+| `VerticalOffsetPx` | Vertical offset from the top of the icon |
+| `CornerRadius` | Badge corner rounding |
+| `FontSize` | Badge font size |
+| `BadgeColorRgba` | Badge background colour as `R,G,B,A` (0–255) |
+| `TextColorRgba` | Badge text colour as `R,G,B,A` (0–255) |
+| `EmptyScanHoldCount` | How many empty scans to tolerate before hiding badges |
+| `TransientRetryIntervalMs` | Retry interval (ms) during transient empty scans |
 
 Restart the app after editing settings.
