@@ -1,0 +1,84 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+  <Package
+    Name="Taskbar Number Overlay"
+    Manufacturer="HotkeyNumber"
+    Version="1.0.0"
+    UpgradeCode="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    Scope="perMachine">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Taskbar Number Overlay is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="Main" Title="Taskbar Number Overlay" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="ProgramMenuShortcut" />
+    </Feature>
+
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Taskbar Number Overlay" />
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="AppProgramMenuDir" Name="Taskbar Number Overlay" />
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+
+      <Component Id="MainExe" Guid="b1c2d3e4-f5a6-7890-bcde-f12345678901">
+        <File Id="TaskbarNumberOverlayExe"
+              Source="..\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\TaskbarNumberOverlay.exe"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="MainDll" Guid="c3d4e5f6-a7b8-9012-cdef-234567890123">
+        <File Id="TaskbarNumberOverlayDll"
+              Source="..\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\TaskbarNumberOverlay.dll"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="DepsJson" Guid="d4e5f6a7-b8c9-0123-defa-345678901234">
+        <File Id="TaskbarNumberOverlayDepsJson"
+              Source="..\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\TaskbarNumberOverlay.deps.json"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="RuntimeConfig" Guid="e5f6a7b8-c9d0-1234-efab-456789012345">
+        <File Id="TaskbarNumberOverlayRuntimeConfig"
+              Source="..\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\TaskbarNumberOverlay.runtimeconfig.json"
+              KeyPath="yes" />
+      </Component>
+
+      <Component Id="SettingsJson" Guid="c2d3e4f5-a6b7-8901-cdef-123456789012">
+        <File Id="SettingsJson"
+              Source="..\TaskbarNumberOverlay\bin\Release\net8.0-windows\publish\settings.json"
+              KeyPath="yes" />
+      </Component>
+
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="AppProgramMenuDir">
+      <Component Id="ProgramMenuShortcut" Guid="c8d9e0f1-a2b3-4567-cdef-789012345678">
+        <Shortcut Id="StartMenuShortcut"
+                  Name="Taskbar Number Overlay"
+                  Description="Show number labels on taskbar app icons"
+                  Target="[INSTALLFOLDER]TaskbarNumberOverlay.exe"
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveAppProgramMenuDir" Directory="AppProgramMenuDir" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\HotkeyNumber\TaskbarNumberOverlay"
+                       Name="StartMenuShortcut"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+</Wix>

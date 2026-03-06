@@ -1,0 +1,43 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+  <Bundle
+    Name="Taskbar Number Overlay"
+    Version="1.0.0"
+    Manufacturer="HotkeyNumber"
+    UpgradeCode="d4e5f6a7-b8c9-0123-defa-456789012345">
+
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication
+        Theme="hyperlinkLicense"
+        LicenseUrl="" />
+    </BootstrapperApplication>
+
+    <util:RegistrySearch
+      Id="DotNet8DesktopRuntimeSearch"
+      Root="HKLM"
+      Key="SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App"
+      Result="exists"
+      Variable="DotNet8DesktopInstalled" />
+
+    <Chain>
+
+      <ExePackage
+        Id="DotNet8DesktopRuntime"
+        SourceFile="dotnet-desktop-runtime-8.0-win-x64.exe"
+        DownloadUrl="https://aka.ms/dotnet/8.0/windowsdesktop-runtime-win-x64.exe"
+        InstallArguments="/install /quiet /norestart"
+        RepairArguments="/repair /quiet /norestart"
+        UninstallArguments="/uninstall /quiet /norestart"
+        DetectCondition="DotNet8DesktopInstalled"
+        Permanent="yes" />
+
+      <MsiPackage
+        SourceFile="..\Installer\bin\x64\Release\TaskbarNumberOverlay-Setup.msi" />
+
+    </Chain>
+
+  </Bundle>
+
+</Wix>

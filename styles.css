@@ -1,0 +1,231 @@
+:root {
+  --bg: #0d1117;
+  --card: #161b26;
+  --card-hover: #1c2333;
+  --text: #e2e8f4;
+  --muted: #8b97b0;
+  --accent: #4f8ef7;
+  --accent-dark: #1e3a6e;
+  --accent-glow: rgba(79, 142, 247, 0.15);
+  --border: #252d3d;
+  --green: #3ecf8e;
+  --tip-bg: #0e2016;
+  --tip-border: #1d4a30;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Inter, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+.container {
+  width: min(760px, calc(100% - 2.5rem));
+  margin: 0 auto;
+}
+
+/* ── Hero ── */
+
+.hero {
+  padding: 5rem 0 3.5rem;
+  text-align: center;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, #1a2744 0%, transparent 70%);
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  display: inline-block;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid rgba(79, 142, 247, 0.3);
+  border-radius: 99px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.85rem;
+  margin: 0 0 1.4rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 50ch;
+  margin: 0 auto 2rem;
+}
+
+.button-download {
+  display: inline-block;
+  text-decoration: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-radius: 0.7rem;
+  box-shadow: 0 0 24px rgba(79, 142, 247, 0.35);
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.button-download:hover {
+  background: #6aa0ff;
+  box-shadow: 0 0 34px rgba(79, 142, 247, 0.5);
+}
+
+.screenshot-wrap {
+  margin: 0 auto 1.75rem;
+  max-width: 680px;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.small-note {
+  margin: 0.9rem auto 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ── Sections ── */
+
+main {
+  padding: 1.5rem 0 3rem;
+}
+
+.section {
+  margin: 1.5rem auto;
+  padding: 1.6rem 1.8rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+p {
+  margin: 0 0 0.9rem;
+  color: var(--muted);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+p strong {
+  color: var(--text);
+}
+
+/* ── Shortcut grid ── */
+
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.shortcut-card {
+  background: var(--card-hover);
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.shortcut-key {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid rgba(79, 142, 247, 0.25);
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  display: inline-block;
+  width: fit-content;
+}
+
+.shortcut-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ── Steps ── */
+
+.steps {
+  margin: 0 0 1rem;
+  padding-left: 1.3rem;
+  color: var(--muted);
+}
+
+.steps li {
+  margin-bottom: 0.65rem;
+}
+
+.steps li strong {
+  color: var(--text);
+}
+
+/* ── Tip ── */
+
+.tip {
+  margin-top: 1.1rem !important;
+  background: var(--tip-bg);
+  border: 1px solid var(--tip-border);
+  border-radius: 0.6rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.92rem;
+  color: #7ecda0 !important;
+}
+
+/* ── Generic list ── */
+
+.list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--muted);
+}
+
+.list li {
+  margin-bottom: 0.5rem;
+}
+
+/* ── Footer ── */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0 2.5rem;
+  text-align: center;
+}
+
+.footer p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}

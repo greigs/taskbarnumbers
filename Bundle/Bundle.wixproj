@@ -1,0 +1,11 @@
+<Project Sdk="WixToolset.Sdk/6.0.2">
+  <PropertyGroup>
+    <OutputName>TaskbarNumberOverlay-Install</OutputName>
+    <OutputType>Bundle</OutputType>
+    <Platform>x64</Platform>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Bal.wixext" Version="*" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="*" />
+  </ItemGroup>
+</Project>
