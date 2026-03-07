@@ -20,6 +20,7 @@ internal sealed class BadgeManager : Form
     private readonly List<LabelInfo> lastLabels = [];
     private int unchangedPolls;
     private int consecutiveEmptyScans;
+    private bool isFullscreenSuppressed;
 
     public BadgeManager()
     {
@@ -60,6 +61,19 @@ internal sealed class BadgeManager : Form
 
     private new void Refresh()
     {
+        // Hide badges while a fullscreen window is active.
+        var fullscreen = IsFullscreenWindowActive();
+        if (fullscreen != isFullscreenSuppressed)
+        {
+            isFullscreenSuppressed = fullscreen;
+            if (fullscreen)
+            {
+                HideAllBadges();
+                return;
+            }
+        }
+        if (fullscreen) return;
+
         var includeExpensive = lastLabels.Count == 0 || unchangedPolls % 8 == 0;
 
         var next = TaskbarLocator.GetNumberedButtonLocations(includeExpensive)
@@ -134,6 +148,46 @@ internal sealed class BadgeManager : Form
             pool[i].AllowHide = false;
         }
     }
+
+    private void HideAllBadges()
+    {
+        foreach (var w in pool)
+        {
+            w.AllowHide = true;
+            w.Visible = false;
+            w.AllowHide = false;
+        }
+    }
+
+    private static bool IsFullscreenWindowActive()
+    {
+        var hwnd = GetForegroundWindow();
+        if (hwnd == IntPtr.Zero) return false;
+        if (!GetWindowRect(hwnd, out var wr)) return false;
+        var winRect = new Rectangle(wr.Left, wr.Top, wr.Right - wr.Left, wr.Bottom - wr.Top);
+
+        foreach (var screen in Screen.AllScreens)
+        {
+            if (!winRect.Contains(screen.Bounds)) continue;
+
+            // Exclude the desktop and taskbar shell windows.
+            var cls = new System.Text.StringBuilder(256);
+            GetClassName(hwnd, cls, cls.Capacity);
+            var name = cls.ToString();
+            if (name is "Progman" or "WorkerW" or "Shell_TrayWnd" or "Shell_SecondaryTrayWnd")
+                continue;
+
+            return true;
+        }
+        return false;
+    }
+
+    [DllImport("user32.dll")] private static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll")] private static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
+    [DllImport("user32.dll")] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT { public int Left, Top, Right, Bottom; }
 
     private Icon CreateTrayIcon()
     {
